@@ -1,6 +1,7 @@
 """Generic linux daemon base class for python 3.x."""
 
 import sys, os, time, atexit, signal
+import syslog
 
 
 class daemon:
@@ -10,17 +11,17 @@ class daemon:
 
     def __init__(self, pidfile):
         self.pidfile = pidfile
-        self.stdOutFd = os.dup(1)
-        self.stdInFd = os.dup(0)
-        self.stdErrFd = os.dup(2)
+        # self.stdOutFd = os.dup(1)
+        # self.stdInFd = os.dup(0)
+        # self.stdErrFd = os.dup(2)
 
-    def RestoreStandard(self):
-        os.dup2(self.stdOutFd, 1)
-        os.close(self.stdOutFd)
-        os.dup2(self.stdInFd, 0)
-        os.close(self.stdInFd)
-        os.dup2(self.stdErrFd, 2)
-        os.close(self.stdErrFd)
+    # def RestoreStandard(self):
+    #     os.dup2(self.stdOutFd, 1)
+    #     os.close(self.stdOutFd)
+    #     os.dup2(self.stdInFd, 0)
+    #     os.close(self.stdInFd)
+    #     os.dup2(self.stdErrFd, 2)
+    #     os.close(self.stdErrFd)
 
     def daemonize(self):
         """Deamonize class. UNIX double fork mechanism."""
@@ -72,6 +73,7 @@ class daemon:
 
     def delpid(self):
         os.remove(self.pidfile)
+
 
 
     def start(self):
